@@ -41,12 +41,12 @@ public class AppTest
         req.session.data.put("{id}",Integer.toString(id));
         return req;
     }
-    @Test
-    public void post() {
-        JSONObject data = new JSONObject();
-        View view = new AssertationView(data);
-        ProductController::setView(view);
-        ProductController::post();
-    }
+//    @Test
+//    public void post() {
+//        JSONObject data = new JSONObject();
+//        View view = new AssertationView(data);
+//        ProductController::setView(view);
+//        ProductController::post();
+//    }
 
 }
