@@ -23,28 +23,34 @@ public class ProductController {
     public static void post(Request req, Response res){
         try{
             int id = req.session.getInt("{id}");
+            System.out.println(id);
             Products products = new Products(id).FETCH();
+
             products.price = req.getBigDecimal("price");
+            System.out.println(1213123123);
             products.name  = req.getString("name");
             products.amount= req.getInt("amount");
             products.group = req.getInt("group");
             products.description = req.getString("description");
             products.producer = req.getString("producer");
+            System.out.println(1213123123);
             products.UPDATE();
             res.data.put("message","OK");
             res.code=200;
             view.view(res);
         }catch (NoSuchIdException e){
             res.data.put("message","Id error");
-            res.code=204;
+            res.code=202;
             view.view(res);
         }
         catch (InvalidDataException e){
+
             res.data.put("message","data error");
             res.code=504;
             view.view(res);
         }
         catch (Exception e){
+            System.out.println(e);
             res.send(500, "Not OK");
         }
     }
