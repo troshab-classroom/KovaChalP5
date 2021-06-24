@@ -90,6 +90,7 @@ public class GroupController {
         }
     }
     public static void getAll(Request req, Response res){
+        System.out.println("1");
         ArrayList<Groups> Groups = new Groups().GET();
 
         JSONArray jarr = new JSONArray();
@@ -101,6 +102,7 @@ public class GroupController {
             jarr.add(productJsonified);
         }
         res.data.put("data",jarr);
+        System.out.println("2");
         view.view(res);
 
     }
