@@ -8,6 +8,7 @@ public class Products extends BaseModel<Products> {
     public String name;
     public int amount;
     public int group;
+    public String description;
     public static String table = "product_group";
     //constructors
     public Products(){ }

@@ -5,6 +5,7 @@ import org.App.Utils.Utils.BaseModel;
 public class Groups extends BaseModel<Groups>
 {
     public String name;
+    public String description;
     public static String table = "groups";
     //constructors
     public Groups(){}

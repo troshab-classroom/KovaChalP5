@@ -39,13 +39,13 @@ public class  BaseModel<T extends Model<T>> implements Model<T>{
             throw new NoSuchIdException("");
         }
 
-        ResultSet rs = Database.executeQuery("DELETE FROM "+getTable()+" WHERE id = "+id);
+        ResultSet rs = Database.executeQuery("DELETE FROM `"+getTable()+"` WHERE id = "+id);
     }
     @Override
     public void UPDATE() throws InvalidDataException {
         validate();
         try {
-            String sql = "UPDATE " + getTable() + " SET ";
+            String sql = "UPDATE `" + getTable() + "` SET ";
 
             for (Field f : getClass().getDeclaredFields()) {
                 if (f.getName().equals("table")) continue;
@@ -74,7 +74,7 @@ public class  BaseModel<T extends Model<T>> implements Model<T>{
             sql+= (part2+");");
             System.out.println(sql);
             Database.executeQuery(sql);
-            ResultSet rs = Database.executeQuery("SELECT MAX(id) FROM "+getTable());
+            ResultSet rs = Database.executeQuery("SELECT MAX(id) FROM `"+getTable()+"`");
             rs.next();
 
             int r = rs.getInt(1);
@@ -92,7 +92,7 @@ public class  BaseModel<T extends Model<T>> implements Model<T>{
     public ArrayList<T> GET(){
         try {
             ArrayList<T> arr = new ArrayList<T>();
-            ResultSet rs = Database.executeQuery("SELECT * FROM " + getTable());
+            ResultSet rs = Database.executeQuery("SELECT * FROM `" + getTable()+"`");
             //System.out.println(rs.toString());
             while (rs.next()) {
                 int i =1;
@@ -131,7 +131,7 @@ public class  BaseModel<T extends Model<T>> implements Model<T>{
     public ArrayList<T> WHERE(String expression) throws SQLException{
         try {
             ArrayList<T> arr = new ArrayList<T>();
-            ResultSet rs = Database.executeQuery("SELECT * FROM " + getTable() + " WHERE " + expression);
+            ResultSet rs = Database.executeQuery("SELECT * FROM `" + getTable() + "` WHERE " + expression);
             //System.out.println(rs.toString());
             while (rs.next()) {
                 int i = 1;
