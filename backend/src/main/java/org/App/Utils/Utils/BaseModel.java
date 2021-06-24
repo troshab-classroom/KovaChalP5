@@ -62,7 +62,7 @@ public class  BaseModel<T extends Model<T>> implements Model<T>{
     public void INSERT() throws InvalidDataException {
         validate();
         try{
-            String sql = "INSERT INTO "+getTable()+" (`";
+            String sql = "INSERT INTO `"+getTable()+"` (`";
             String part2= ") VALUES ('";
             for(Field f: getClass().getDeclaredFields()){
                 if(f.getName().equals("table"))continue;

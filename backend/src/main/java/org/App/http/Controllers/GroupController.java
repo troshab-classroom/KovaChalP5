@@ -41,10 +41,18 @@ public class GroupController {
     public static void put(Request req, Response res){
         try {
             Groups Groups = new Groups();
-            Groups.name  = req.getString("name");
-            Groups.description = req.getString("description");
-            Groups.INSERT();
-            res.data.put("id",Groups.getId());
+            JSONArray arr = (JSONArray)req.data.get("data");
+            System.out.println(arr.get(0));
+            for(Object obj:arr) {
+                System.out.println("aaa");
+                req = new Request(req.httpExchange);
+                req.data = (JSONObject) obj;
+                Groups.name = req.getString("name");
+                Groups.description = req.getString("description");
+                System.out.println(Groups.description + " " + Groups.name);
+                Groups.INSERT();
+            }
+            res.data.put("message","OK");
             res.code=200;
             view.view(res);
         } catch (InvalidDataException e) {

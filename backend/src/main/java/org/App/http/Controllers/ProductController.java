@@ -47,14 +47,20 @@ public class ProductController {
     public static void put(Request req, Response res){
         try {
             Products products = new Products();
-            products.price = req.getBigDecimal("price");
-            products.name  = req.getString("name");
-            products.amount= req.getInt("amount");
-            products.group = req.getInt("group");
-            products.description = req.getString("description");
-            products.producer = req.getString("producer");
-            products.INSERT();
-            res.data.put("id",products.getId());
+            JSONArray arr = (JSONArray)req.data.get("data");
+            for(Object obj:arr) {
+                req = new Request(req.httpExchange);
+                req.data = (JSONObject)obj;
+                products.price = req.getBigDecimal("price");
+                products.name = req.getString("name");
+                products.amount = req.getInt("amount");
+                products.group = req.getInt("group");
+                products.description = req.getString("description");
+                products.producer = req.getString("producer");
+                products.INSERT();
+                //
+            }
+            res.data.put("message", "ok");
             res.code=200;
             view.view(res);
         } catch (InvalidDataException e) {
