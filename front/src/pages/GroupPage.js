@@ -1,13 +1,13 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useHttp} from "../hooks/http.hook";
 import {Loader} from "../components/Loader";
 import {AuthContext} from "../context/AuthContext";
 import {GroupList} from "../components/Group/GroupList";
-import axios from "axios"
+
 export const GroupPage = () => {
     const [groups, setGroups] = useState({data: [{}]});
-    const {loading, request} = useHttp();
-    // const {token} = useContext(AuthContext);
+    const {loading} = useHttp();
+    const {token} = useContext(AuthContext);
 
     /*const getGroup = () => {
         try{
@@ -24,19 +24,26 @@ export const GroupPage = () => {
         getGroup().then((fetched) => {console.log(fetched)});
     });*/
 	function getList() {
-		return fetch('http://localhost:8080/api/group/get/All')
-		.then(data => data.json())
+		return fetch('http://localhost:8080/api/group/get/All',{
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Content-Type": "application/json",
+				"authentification": token.token,
+			},
+		}).then(data => data.json());
 	}
+
 	useEffect(() => {
 	   let mounted = true;
-	   getList()
-		 .then(items => {
+	   getList().then(items => {
 		   if(mounted) {
 			 setGroups(items);
 		   }
-		 })
+		 });
 	   return () => mounted = false;
-	 }, [])
+	   }, []);
+
     if (loading){
         return <Loader/>
     }

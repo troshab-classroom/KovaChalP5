@@ -95,8 +95,8 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
 
     const submit = async () => {
         try{
-            const data = await request('api/group', 'PUT', {...modalRows}, {
-                Authorization: "Bearer " + token
+            const data = await request('http://localhost:8080/api/group', 'PUT', {data: modalRows}, {
+                authentification: token.token
             });
             message(data.message());
         }catch (e) {}

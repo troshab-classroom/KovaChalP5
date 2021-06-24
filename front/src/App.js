@@ -10,7 +10,7 @@ import {Navbar} from "./components/Navbar";
 
 function App() {
     const {token, login, logout, ready} = useAuth();
-    const isAuthenticated = true/*!!token*/;
+    const isAuthenticated = !!token;
     const routes = useRoutes(isAuthenticated);
 
     if (!ready){
