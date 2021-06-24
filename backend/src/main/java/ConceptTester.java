@@ -12,6 +12,8 @@ import java.security.PublicKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import org.abstractj.kalium.NaCl;
+import org.abstractj.kalium.crypto.Box;
 public class ConceptTester {
 
         private KeyPairGenerator keyGen;
@@ -38,11 +40,13 @@ public class ConceptTester {
             return this.publicKey;
         }
         public static  void  main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException {
-            ConceptTester ct = new ConceptTester(1024);
+            /*ConceptTester ct = new ConceptTester(1024);
             ct.createKeys();
             String str = Base64.getEncoder().encodeToString(ct.getPrivateKey().getEncoded());
             String str2 = Base64.getEncoder().encodeToString(ct.getPublicKey().getEncoded());
             System.out.println(str);
-            System.out.println(str2);
+            System.out.println(str2);*/
+
+
         }
 }

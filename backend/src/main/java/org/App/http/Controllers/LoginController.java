@@ -17,7 +17,7 @@ public class LoginController {
         try {
                 String username = req.getString("username");
                 String pass = req.getString("password");
-                Users user = new Users().WHERE("'username'=" + username).get(0);
+                Users user = new Users().WHERE("`username`='" + username+"'").get(0);
                 if(user==null){
                     res.send(401,"no such user");
                     return;
