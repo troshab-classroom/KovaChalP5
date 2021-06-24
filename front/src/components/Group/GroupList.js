@@ -8,7 +8,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {Loader} from "../Loader";
 import {SortGroupTable} from "./SortGroupTable";
 import {FilterGroupTable} from "./FilterGroupTable";
-
+import axios from "axios"
 const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => {
     const message = useMessage();
     const {loading, error, request, clearError} = useHttp();
@@ -128,6 +128,12 @@ export const GroupList = ({groups}) => {
         message(error);
         clearError();
     }, [error, message, clearError]);
+	
+	useEffect(async () => {
+		console.log(await axios.get("http://localhost:8080/api/group/get/All"));
+		
+		 
+	})
 
     // const addNewRow = () => {
     //     tableRowIndex = parseFloat(tableRowIndex) + 1;
