@@ -29,7 +29,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
 
     const removeRow = () => {
         openDeletionConfirm(true);
-        rowToDelete(product.id_product);
+        rowToDelete(product.id);
     };
 
     const addProduct = () => {
@@ -78,7 +78,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
     return(
         <tr>
             <td>
-                <input type="text" name="id_product" value={product.id_product}
+                <input type="text" name="id_product" value={product.id}
                        disabled={true} onChange={updateValues}/>
             </td>
             <td>
@@ -179,14 +179,14 @@ export const ProductList = ({products}) => {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
         }
-        const data = await request('Product/delete', 'POST', {id: number}, {
+        const data = await request('api/good/' + number, 'DELETE', null, {
             Authorization: "Bearer " + token
         });
         message(data.message);
     };
 
     const handleChange = data => {
-        rows[rows.findIndex(x => x.id_product===data.id_product)] = data;
+        rows[rows.findIndex(x => x.id===data.id)] = data;
         setRows(rows);
     };
 
@@ -195,7 +195,7 @@ export const ProductList = ({products}) => {
     };
 
     const removeProductSubmit = async () => {
-        const data = await request('Product/removeProd', 'POST', {name: productName, amount:amountToAddRemove}, {
+        const data = await request('api/good//removeProd', 'POST', {name: productName, amount:amountToAddRemove}, {
             Authorization: "Bearer " + token
         });
         message(data.message);
@@ -203,7 +203,7 @@ export const ProductList = ({products}) => {
     };
 
     const addProductSubmit = async () => {
-        const data = await request('Product/addProd', 'POST', {name: productName, amount:amountToAddRemove}, {
+        const data = await request('api/good/addProd', 'POST', {name: productName, amount:amountToAddRemove}, {
             Authorization: "Bearer " + token
         });
         message(data.message);

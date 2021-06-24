@@ -28,7 +28,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
 
     const removeRow = () => {
         openDeletionConfirm(true);
-        rowToDelete(group.id_group);
+        rowToDelete(group.id);
     };
 
     const editRow = () => {
@@ -49,7 +49,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
 
     const confirmRow = async () =>{
         setEdit(false);
-        const data = await request('Group/update', 'POST', group, {
+        const data = await request('api/group/' + group.id, 'POST', group, {
             Authorization: "Bearer " + token
         });
         message(data.message);
@@ -67,7 +67,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
     return(
         <tr>
             <td>
-                <input type="text" name="id_group" value={group.id_group}
+                <input type="text" name="id_group" value={group.id}
                        disabled={true} onChange={updateValues}/>
             </td>
             <td>
@@ -144,21 +144,21 @@ export const GroupList = ({groups}) => {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
         }
-        const data = await request('Group/delete', 'POST', {id: number}, {
+        const data = await request('api/group/' + number, 'DELETE', null, {
             Authorization: "Bearer " + token
         });
         message(data.message);
     };
 
     const handleChange = data => {
-        rows[rows.findIndex(x => x.id_group===data.id_group)] = data;
+        rows[rows.findIndex(x => x.id===data.id)] = data;
         setRows(rows);
     };
 
     if(loading){
         return <Loader/>
     }
-
+    console.log(groups);
     if (!groups.length){
         return <p className="center nothing">
             Нічого для відображення

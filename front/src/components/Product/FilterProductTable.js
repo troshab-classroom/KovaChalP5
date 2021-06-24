@@ -173,7 +173,7 @@ export const FilterProductTable = ({setIsModalTableOpened}) => {
             // modalRows.map((mRow) => {
             //
             // })
-            const data = await request('Group/filterBy', 'POST', modalRows, {
+            const data = await request('api/good/filter/By', 'POST', modalRows, {
                 Authorization: "Bearer " + token
             });
             message(data.message());

@@ -5,22 +5,24 @@ import {AuthContext} from "../context/AuthContext";
 import {GroupList} from "../components/Group/GroupList";
 
 export const GroupPage = () => {
-    const [groups, setGroups] = useState([]);
+    const [groups, setGroups] = useState({data: [{}]});
     const {loading, request} = useHttp();
-    const {token} = useContext(AuthContext);
+    // const {token} = useContext(AuthContext);
 
-    const getClientsCards = useCallback(async () => {
+    const getGroup = () => {
         try{
-            const fetched = await request('Group/getAll', "GET", null, {
+            request('http://localhost:8080/api/group/get/All', "GET", null/*, {
                 Authorization: "Bearer " + token
-            });
-            setGroups(fetched);
+            }*/).then((fetched) => {return fetched});
+            // console.log(fetched);
+            // // setGroups(fetched);
+            // console.log(groups);
         }catch (e) {}
-    }, [token, request]);
+    };
 
     useEffect(() => {
-        getClientsCards();
-    }, [getClientsCards]);
+        getGroup().then((fetched) => {console.log(fetched)});
+    });
 
     if (loading){
         return <Loader/>
@@ -28,7 +30,11 @@ export const GroupPage = () => {
 
     return (
         <>
-            {!loading && <GroupList groups={[{id_group: 10, name: "AAA", description: "BBB", sum_total: 123456557}]} /*groups={groups}*//>}
+            {console.log(groups)}
+            {console.log(groups.data)}
+            {!loading && <GroupList
+                // groups={[{id_group: 10, name: "AAA", description: "BBB", sum_total: 123456557}]}
+                groups={groups.data}/>}
         </>
     )
 };
