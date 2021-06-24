@@ -9,7 +9,6 @@ public class JsonView implements View {
     public void view(Response res) {
         res.httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
         res.httpExchange.getResponseHeaders().set("Content-Type", "application/json");
-        res.httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
         res.send(res.code,res.data.toString());
     }
 }

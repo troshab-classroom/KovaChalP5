@@ -30,7 +30,11 @@ public class Router {
 
     protected static void Handle(HttpExchange httpExchange){
         if(httpExchange.getRequestMethod()=="OPTIONS"){
-            httpExchange.getResponseHeaders().put()
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Credentials","true");
+            try {
+                httpExchange.sendResponseHeaders(200, 0);
+            }catch(Exception e){}
+            return;
         }
         String uri = httpExchange.getRequestURI().getPath();
         String method = httpExchange.getRequestMethod();
