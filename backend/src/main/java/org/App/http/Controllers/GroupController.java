@@ -42,9 +42,7 @@ public class GroupController {
         try {
             Groups Groups = new Groups();
             JSONArray arr = (JSONArray)req.data.get("data");
-            System.out.println(arr.get(0));
             for(Object obj:arr) {
-                System.out.println("aaa");
                 req = new Request(req.httpExchange);
                 req.data = (JSONObject) obj;
                 Groups.name = req.getString("name");
