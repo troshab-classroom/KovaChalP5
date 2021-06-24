@@ -60,8 +60,12 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
 
     const confirmRow = async () =>{
         setEdit(false);
-        const data = await request('Group/update', 'POST', product, {
-            Authorization: "Bearer " + token
+        product.price += '';
+        product.amount += '';
+        product.id += '';
+        product.group += '';
+        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+            authentification: token.token
         });
         message(data.message);
     };
@@ -174,15 +178,15 @@ export const ProductList = ({products}) => {
     const deleteRow = async (number) => {
         setIsModalDeletionConfirmOpen(false);
         let updatedRows = [...rows];
-        let indexToRemove = updatedRows.findIndex(x => x.number === number);
+        let indexToRemove = updatedRows.findIndex(x => x.id === number);
         if (indexToRemove > -1) {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
+            const data = await request('http://localhost:8080/api/good/' + number, 'DELETE', null, {
+                authentification: token.token
+            });
+            message(data.message);
         }
-        const data = await request('api/good/' + number, 'DELETE', null, {
-            Authorization: "Bearer " + token
-        });
-        message(data.message);
     };
 
     const handleChange = data => {
@@ -195,7 +199,7 @@ export const ProductList = ({products}) => {
     };
 
     const removeProductSubmit = async () => {
-        const data = await request('api/good//removeProd', 'POST', {name: productName, amount:amountToAddRemove}, {
+        const data = await request('api/good/removeProd', 'POST', {name: productName, amount:amountToAddRemove}, {
             Authorization: "Bearer " + token
         });
         message(data.message);
@@ -222,15 +226,15 @@ export const ProductList = ({products}) => {
 
     return (
         <div className={"container_m"}>
-            <a className="add_button" onClick={() => setIsFilterTableOpen(true)}>
+            <button className="add_button" onClick={() => setIsFilterTableOpen(true)}>
                 Фільтрувати
-            </a>
-            <a className="add_button" onClick={() => setIsModalTableOpen(true)}>
+            </button>
+            <button className="add_button" onClick={() => setIsModalTableOpen(true)}>
                 Додати
-            </a>
-            <a className="add_button" onClick={() => setIsOrderTableOpen(true)}>
+            </button>
+            <button className="add_button" onClick={() => setIsOrderTableOpen(true)}>
                 Упорядкувати
-            </a>
+            </button>
             {isOrderTableOpen && (
                 <Modal onClose={() => setIsOrderTableOpen(false)}>
                     <SortProductTable setIsModalTableOpened={setIsOrderTableOpen} setData={setRows}/>

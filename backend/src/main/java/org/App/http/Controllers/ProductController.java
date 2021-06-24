@@ -39,21 +39,24 @@ public class ProductController {
             res.code=200;
             view.view(res);
         }catch (NoSuchIdException e){
+            System.out.println(res.data);
             res.data.put("message","Id error");
             res.code=202;
             view.view(res);
         }
         catch (InvalidDataException e){
-
+            System.out.println(res.data);
             res.data.put("message","data error");
             res.code=504;
             view.view(res);
         }
         catch (Exception e){
+            System.out.println(res.data);
             System.out.println(e);
             res.send(500, "Not OK");
         }
     }
+
     public static void put(Request req, Response res){
         try {
             Products products = new Products();

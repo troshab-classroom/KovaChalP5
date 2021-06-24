@@ -114,7 +114,7 @@ public class GroupController {
     }
     public static void getFiltered(Request req, Response res){
         try {
-            System.out.println("aaa");
+            System.out.println(10);
             ArrayList<Groups> Groups = new Groups().WHERE(req.getString("query"));
 
             JSONArray jarr = new JSONArray();

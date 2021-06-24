@@ -1,26 +1,48 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useHttp} from "../hooks/http.hook";
 import {Loader} from "../components/Loader";
 import {AuthContext} from "../context/AuthContext";
 import {ProductList} from "../components/Product/ProductList";
 
 export const ProductPage = () => {
-    const [products, setProducts] = useState([]);
-    const {loading, request} = useHttp();
+    const [products, setProducts] = useState({data: [{}]});
+    const {loading} = useHttp();
     const {token} = useContext(AuthContext);
 
-    const getClientsCards = useCallback(async () => {
-        try{
-            const fetched = await request('api/good/get/All', "GET", null, {
-                Authorization: "Bearer " + token
-            });
-            setProducts(fetched);
-        }catch (e) {}
-    }, [token, request]);
+    // const getProducts = useCallback(async () => {
+    //     try{
+    //         const fetched = await request('http://localhost:8080/api/good/get/All', "GET", null, {
+    //             Authorization: "Bearer " + token
+    //         });
+    //         setProducts(fetched);
+    //     }catch (e) {}
+    // }, [token, request]);
+    //
+    // useEffect(() => {
+    //     getProducts();
+    // }, [getProducts]);
+
+    function getList() {
+        console.log(token);
+        return fetch('http://localhost:8080/api/good/get/All',{
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                "authentification": token.token,
+            },
+        }).then(data => data.json());
+    }
 
     useEffect(() => {
-        getClientsCards();
-    }, [getClientsCards]);
+        let mounted = true;
+        getList().then(items => {
+            if(mounted) {
+                setProducts(items);
+            }
+        });
+        return () => mounted = false;
+    }, []);
 
     if (loading){
         return <Loader/>

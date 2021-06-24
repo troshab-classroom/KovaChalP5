@@ -17,7 +17,7 @@ export const useRoutes = (isAuthenticated) => {
     //     </Switch>
     // );
     console.log(isAuthenticated);
-    // if (isAuthenticated){
+    if (isAuthenticated){
         return(
             <Switch>
 
@@ -31,13 +31,13 @@ export const useRoutes = (isAuthenticated) => {
 
             </Switch>
         )
-    // }
-    // return (
-    //     <Switch>
-    //         <Route path="/" exact>
-    //             <AuthPage/>
-    //         </Route>
-    //         <Redirect to="/"/>
-    //     </Switch>
-    // )
+    }
+    return (
+        <Switch>
+            <Route path="/" exact>
+                <AuthPage/>
+            </Route>
+            <Redirect to="/"/>
+        </Switch>
+    )
 };

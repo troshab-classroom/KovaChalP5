@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import "../tables.css"
 import {Modal} from "../Modal";
 import {useMessage} from "../../hooks/message.hook";
@@ -8,7 +8,6 @@ import {AuthContext} from "../../context/AuthContext";
 import {Loader} from "../Loader";
 import {SortGroupTable} from "./SortGroupTable";
 import {FilterGroupTable} from "./FilterGroupTable";
-import axios from "axios"
 const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => {
     const message = useMessage();
     const {loading, error, request, clearError} = useHttp();
@@ -16,6 +15,8 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
     const [edit, setEdit] = useState(false);
     const [backup, setBackup] = useState({});
     const {token} = useContext(AuthContext);
+    const [products, setProducts] = useState([{}]);
+    const [totalSum, setTotalSum] = useState(0);
 
     useEffect(()=>{
         // handleChangeNumber(row.number);
@@ -49,8 +50,8 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
 
     const confirmRow = async () =>{
         setEdit(false);
-        const data = await request('api/group/' + group.id, 'POST', group, {
-            Authorization: "Bearer " + token
+        const data = await request('http://localhost:8080/api/group/' + group.id, 'POST', group, {
+            authentification: token.token
         });
         message(data.message);
     };
@@ -59,6 +60,42 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
         setEdit(false);
         handleChangeGroup(backup);
     };
+
+    const getList = useCallback((req) => {
+        return fetch('http://localhost:8080/api/good/filter/By',{
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                "authentification": token.token
+            },
+            body: JSON.stringify({query: req})
+        }).then(data => data.json())
+    }, [token]);
+
+    useEffect(() => {
+        try{
+            let req = "`group` = '" + group.id + "'";
+            let mounted = true;
+            getList(req).then(items => {
+                if(mounted) {
+                    console.log(items);
+                    setProducts(items.data);
+                }
+            });
+            return () => mounted = false;
+        }catch (e) {}
+    }, [getList, group]);
+
+    useEffect(() => {
+        console.log(products);
+        let sum = 0;
+        for(let i = 0; i < products.length; ++i){
+            sum += Number.parseFloat(products[i].price) * Number.parseFloat(products[i].amount);
+        }
+        setTotalSum(sum);
+        console.log(totalSum);
+    }, [products]);
 
     if(loading){
         return <Loader/>
@@ -81,8 +118,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
                        disabled={!edit} onChange={(e) => {updateValues(e)}}/>
             </td>
             <td>
-                <input type="text" name="sum_total" value={group.sum_total}
-                       minLength={"1"} maxLength={"50"}
+                <input type="number" name="sum_total" value={totalSum}
                        disabled={true} onChange={(e) => {updateValues(e)}}/>
             </td>
             <td>
@@ -112,7 +148,7 @@ export const GroupList = ({groups}) => {
     const message = useMessage();
     const {token} = useContext(AuthContext);
     const {loading, error, request, clearError} = useHttp();
-    const [rowToDelete, setRowToDelete] = useState(undefined);
+    const [rowToDelete, setRowToDelete] = useState(0);
     const [isModalTableOpen, setIsModalTableOpen] = useState(false);
     const [isModalDeletionConfirmOpen, setIsModalDeletionConfirmOpen] = useState(false);
     const [rows, setRows] = useState(groups);
@@ -129,11 +165,9 @@ export const GroupList = ({groups}) => {
         clearError();
     }, [error, message, clearError]);
 	
-	useEffect(async () => {
-		console.log(await axios.get("http://localhost:8080/api/group/get/All"));
-		
-		 
-	})
+	// useEffect(async () => {
+	// 	console.log(await axios.get("http://localhost:8080/api/group/get/All"));
+	// });
 
     // const addNewRow = () => {
     //     tableRowIndex = parseFloat(tableRowIndex) + 1;
@@ -145,15 +179,15 @@ export const GroupList = ({groups}) => {
     const deleteRow = async (number) => {
         setIsModalDeletionConfirmOpen(false);
         let updatedRows = [...rows];
-        let indexToRemove = updatedRows.findIndex(x => x.number === number);
+        let indexToRemove = updatedRows.findIndex(x => x.id === number);
         if (indexToRemove > -1) {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
+            const data = await request('http://localhost:8080/api/group/' + number, 'DELETE', null, {
+                authentification: token.token
+            });
+            message(data.message);
         }
-        const data = await request('api/group/' + number, 'DELETE', null, {
-            Authorization: "Bearer " + token
-        });
-        message(data.message);
     };
 
     const handleChange = data => {
@@ -173,15 +207,15 @@ export const GroupList = ({groups}) => {
 
     return (
         <div className={"container_m"}>
-            <a className="add_button" onClick={() => setIsFilterTableOpen(true)}>
+            <button className="add_button" onClick={() => setIsFilterTableOpen(true)}>
                 Фільтрувати
-            </a>
-            <a className="add_button" onClick={() => setIsModalTableOpen(true)}>
+            </button>
+            <button className="add_button" onClick={() => setIsModalTableOpen(true)}>
                 Додати
-            </a>
-            <a className="add_button" onClick={() => setIsOrderTableOpen(true)}>
+            </button>
+            <button className="add_button" onClick={() => setIsOrderTableOpen(true)}>
                 Упорядкувати
-            </a>
+            </button>
             {isOrderTableOpen && (
                 <Modal onClose={() => setIsOrderTableOpen(false)}>
                     <SortGroupTable setIsModalTableOpened={setIsOrderTableOpen} setData={setRows}/>
@@ -233,10 +267,12 @@ export const GroupList = ({groups}) => {
                 </thead>
 
                 <tbody>
-                {rows.map((group) => {
+                {console.log(rows)}
+                {rows.map((group, index) => {
                     // if(group) {
                         return (
-                            <TableRow row={group}
+                            <TableRow key={index}
+                                      row={group}
                                       handleDataChange={handleChange}
                                       rowToDelete={setRowToDelete}
                                       openDeletionConfirm={setIsModalDeletionConfirmOpen}/>

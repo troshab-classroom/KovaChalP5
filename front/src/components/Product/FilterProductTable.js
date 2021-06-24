@@ -124,9 +124,9 @@ const ModalTableRow = ({row, addRow, handleDataChange, deleteRow}) => {
     )
 };
 let tableRowIndex = 0;
-export const FilterProductTable = ({setIsModalTableOpened}) => {
+export const FilterProductTable = ({setIsModalTableOpened, setData}) => {
     const message = useMessage();
-    const {loading, error, request, clearError} = useHttp();
+    const {loading, error, clearError} = useHttp();
     const [modalRows, setModalRows] = useState([{
         id: 0,
         column: "name",
@@ -169,17 +169,34 @@ export const FilterProductTable = ({setIsModalTableOpened}) => {
 
     const submit = async () => {
         try{
-            // фільтрація на порожні рядки
-            // modalRows.map((mRow) => {
-            //
-            // })
-            const data = await request('api/good/filter/By', 'POST', modalRows, {
-                Authorization: "Bearer " + token
+            let req = "";
+            for (let i = 0; i < modalRows.length; ++i){
+                req += "`" +  modalRows[i].column + "` " + modalRows[i].sign + " '" + modalRows[i].fieldValue + "' " + modalRows[i].boolValue
+            }
+            console.log(req);
+            let mounted = true;
+            getList(req).then(items => {
+                if(mounted) {
+                    console.log(items);
+                    setData(items.data);
+                }
             });
-            message(data.message());
+            return () => mounted = false;
         }catch (e) {}
         setIsModalTableOpened(false);// onClose = isModalTableIsOpen
     };
+
+    function getList(req) {
+        return fetch('http://localhost:8080/api/good/filter/By',{
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                "authentification": token.token,
+            },
+            body: JSON.stringify({query: req})
+        }).then(data => data.json())
+    }
 
     if(loading){
         return <Loader/>

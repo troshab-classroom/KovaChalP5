@@ -52,6 +52,10 @@ const ModalTableRow = ({row, handleDataChange, deleteRow}) => {
                        min={0} onChange={(e) => {updateValues(e)}}/>
             </td>
             <td>
+                <input type="number" name="group" value={product.group}
+                       min={0} onChange={(e) => {updateValues(e)}}/>
+            </td>
+            <td>
                 <button type="button" className="btn btn-remove" onClick={removeRow}>
                     &times;
                 </button>
@@ -71,6 +75,7 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
         producer: "",
         amount: 0,
         price: 0,
+        group: 0
     }]);
     const {token} = useContext(AuthContext);
 
@@ -85,6 +90,7 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
                 producer: "",
                 amount: 0,
                 price: 0,
+                group: 0
             });
         setModalRows(updatedRows)
     };
@@ -113,13 +119,19 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
     }, []);
 
     const submit = async () => {
+        for(let i = 0; i < modalRows.length; ++i){
+            modalRows[i].price += '';
+            modalRows[i].amount += '';
+            modalRows[i].id += '';
+            modalRows[i].group += '';
+        }
         try{
-            const data = await request('api/good', 'POST', {...modalRows}, {
-                Authorization: "Bearer " + token
+            const data = await request('http://localhost:8080/api/good', 'PUT', {data: modalRows}, {
+                authentification: token.token
             });
             message(data.message());
         }catch (e) {}
-        setIsModalTableOpened();
+        setIsModalTableOpened(false);
     };
 
     if(loading){
@@ -145,6 +157,9 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
                     </th>
                     <th>
                         Ціна за одиницю
+                    </th>
+                    <th>
+                        Група товарів
                     </th>
                     <th>
                         Action
