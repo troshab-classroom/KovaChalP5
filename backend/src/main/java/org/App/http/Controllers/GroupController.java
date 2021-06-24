@@ -108,6 +108,7 @@ public class GroupController {
     }
     public static void getFiltered(Request req, Response res){
         try {
+            System.out.println(10);
             ArrayList<Groups> Groups = new Groups().WHERE(req.getString("query"));
 
             JSONArray jarr = new JSONArray();
@@ -119,6 +120,8 @@ public class GroupController {
                 jarr.add(productJsonified);
             }
             res.data.put("data", jarr);
+            System.out.println(11);
+            view.view(res);
         }catch (SQLException e){
             System.out.println(e);
             res.send(500,"database error");

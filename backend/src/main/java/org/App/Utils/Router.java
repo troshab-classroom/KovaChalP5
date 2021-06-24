@@ -29,8 +29,18 @@ public class Router {
     }
 
     protected static void Handle(HttpExchange httpExchange){
-        if(httpExchange.getRequestMethod()=="OPTIONS"){
-            httpExchange.getResponseHeaders().put()
+        if(httpExchange.getRequestMethod().equals("OPTIONS")){
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Methods","*");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Headers","*");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Credentials","true");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
+            try {
+                System.out.println(123);
+                httpExchange.sendResponseHeaders(200, 0);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+            return;
         }
         String uri = httpExchange.getRequestURI().getPath();
         String method = httpExchange.getRequestMethod();

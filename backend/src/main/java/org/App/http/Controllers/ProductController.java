@@ -134,6 +134,7 @@ public class ProductController {
                 jarr.add(productJsonified);
             }
             res.data.put("data", jarr);
+            view.view(res);
         }catch (SQLException e){
             System.out.println(e);
             res.send(500,"database error");
