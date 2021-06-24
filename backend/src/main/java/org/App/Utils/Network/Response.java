@@ -18,6 +18,7 @@ public class Response {
     }
     public void send(int code,String data){
         try {
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
             httpExchange.sendResponseHeaders(code, data.getBytes(StandardCharsets.UTF_8).length);
             httpExchange.getResponseBody().write(data.getBytes(StandardCharsets.UTF_8));
             httpExchange.getResponseBody().flush();
