@@ -94,9 +94,9 @@ export const AuthPage = () => {
                             onChange={changeHandler}
                             required />
                     </div>
-                    <a className="s_btn" aria-disabled={loading} onClick={loginHandler}>
+                    <button className="s_btn" aria-disabled={loading} onClick={loginHandler}>
                         Login
-                    </a>
+                    </button>
                     {/*<input type="submit" className="s_btn" aria-disabled={loading} onClick={registerHandler} value={"Sign up"}/>*/}
                     {/*<div className="signup-link">
                         Not a registered? <a href="signUp.html">Sign up now</a></div>*/}
