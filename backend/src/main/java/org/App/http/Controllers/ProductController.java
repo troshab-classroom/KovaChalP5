@@ -35,10 +35,14 @@ public class ProductController {
             res.code=200;
             view.view(res);
         }catch (NoSuchIdException e){
-            res.send(204, "No suchID");
+            res.data.put("message","Id error");
+            res.code=204;
+            view.view(res);
         }
         catch (InvalidDataException e){
-            res.send(409, "Bad data");
+            res.data.put("message","data error");
+            res.code=504;
+            view.view(res);
         }
         catch (Exception e){
             res.send(500, "Not OK");
