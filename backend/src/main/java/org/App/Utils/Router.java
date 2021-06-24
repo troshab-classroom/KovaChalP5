@@ -29,6 +29,9 @@ public class Router {
     }
 
     protected static void Handle(HttpExchange httpExchange){
+        if(httpExchange.getRequestMethod()=="OPTIONS"){
+            httpExchange.getResponseHeaders().put()
+        }
         String uri = httpExchange.getRequestURI().getPath();
         String method = httpExchange.getRequestMethod();
         Request req = new Request(httpExchange);

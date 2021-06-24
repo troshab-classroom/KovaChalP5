@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.nio.charset.StandardCharsets;
     public class ConceptTester {
 
         private KeyPairGenerator keyGen;
@@ -37,7 +38,7 @@ import java.security.PublicKey;
         public static  void  main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException {
             ConceptTester ct = new ConceptTester(1024);
             ct.createKeys();
-            System.out.println(ct.getPrivateKey().getFormat()+" "+ct.getPublicKey().toString());
+            //System.out.println(Sct.getPrivateKey().getEncoded());
 
         }
 }

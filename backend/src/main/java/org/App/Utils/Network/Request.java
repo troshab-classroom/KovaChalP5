@@ -17,8 +17,11 @@ public class Request {
     public JSONObject data;
     Request(){}
     public Request(HttpExchange he){
+
         try {
+
             httpExchange = he;
+            if(he.getRequestMethod()=="GET")return;
             JSONParser jr = new JSONParser();
             data = (JSONObject) jr.parse(new InputStreamReader(he.getRequestBody(), StandardCharsets.UTF_8));
         }catch(Exception e){
