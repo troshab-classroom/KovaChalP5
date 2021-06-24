@@ -70,7 +70,7 @@ public class ProductController {
                 products.INSERT();
                 //
             }
-            res.data.put("message", "ok");
+            res.data.put("message", "OK");
             res.code=200;
             view.view(res);
         } catch (InvalidDataException e) {
@@ -155,6 +155,7 @@ public class ProductController {
                 jarr.add(productJsonified);
             }
             res.data.put("data", jarr);
+            view.view(res);
         }catch (SQLException e){
             System.out.println(e);
             res.send(500,"database error");
