@@ -10,7 +10,9 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.nio.charset.StandardCharsets;
-    public class ConceptTester {
+import java.util.Base64;
+
+public class ConceptTester {
 
         private KeyPairGenerator keyGen;
         private KeyPair pair;
@@ -38,7 +40,9 @@ import java.nio.charset.StandardCharsets;
         public static  void  main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException {
             ConceptTester ct = new ConceptTester(1024);
             ct.createKeys();
-            //System.out.println(Sct.getPrivateKey().getEncoded());
-
+            String str = Base64.getEncoder().encodeToString(ct.getPrivateKey().getEncoded());
+            String str2 = Base64.getEncoder().encodeToString(ct.getPublicKey().getEncoded());
+            System.out.println(str);
+            System.out.println(str2);
         }
 }

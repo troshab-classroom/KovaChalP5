@@ -120,7 +120,7 @@ public class GroupController {
                 jarr.add(productJsonified);
             }
             res.data.put("data", jarr);
-            System.out.println(11);
+            System.out.println(res.data);
             view.view(res);
         }catch (SQLException e){
             System.out.println(e);

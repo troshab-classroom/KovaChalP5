@@ -8,7 +8,7 @@ public class URLParser {
 
         url=url.split(" ")[1];
         for(String str : urlSchemas){
-
+            System.out.println(str+" "+url);
 
             if(compare(url,str,session)){
 

@@ -46,6 +46,7 @@ public class Router {
         String method = httpExchange.getRequestMethod();
         Request req = new Request(httpExchange);
         Response res= new Response(httpExchange);
+        System.out.println(method+" "+uri);
         push(method+" "+uri,req,res);
     }
     public static Route post(String route,Handler handler){
@@ -80,10 +81,10 @@ public class Router {
     protected static boolean push(String routeUrl,Request req,Response res){
 
         Session session = new Session();
-
-
+        System.out.println(routeUrl);
+        System.out.println(routeUrl.split(" ")[0]+" "+URLParser.getSchema(routeUrl,session));
         Route route=routes.get(routeUrl.split(" ")[0]+" "+URLParser.getSchema(routeUrl,session));
-
+        System.out.println(route);
         if(route==null)App.return404();
         req.session=session;
 
