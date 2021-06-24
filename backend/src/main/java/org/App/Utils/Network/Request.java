@@ -21,10 +21,13 @@ public class Request {
         try {
 
             httpExchange = he;
-            if(he.getRequestMethod()=="GET")return;
+
+            if (he.getRequestMethod().equals("GET")) return;
+            System.out.println(he.getRequestMethod());
             JSONParser jr = new JSONParser();
             data = (JSONObject) jr.parse(new InputStreamReader(he.getRequestBody(), StandardCharsets.UTF_8));
         }catch(Exception e){
+            System.out.println(4);
             Console.dev(e.toString());
         }
 

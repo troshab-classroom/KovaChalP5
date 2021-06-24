@@ -11,7 +11,7 @@ export const ProductPage = () => {
 
     const getClientsCards = useCallback(async () => {
         try{
-            const fetched = await request('Product/getAll', "GET", null, {
+            const fetched = await request('api/good/get/All', "GET", null, {
                 Authorization: "Bearer " + token
             });
             setProducts(fetched);
@@ -29,9 +29,10 @@ export const ProductPage = () => {
     return (
         <>
             {!loading && <ProductList
-                products={[{id_product: 123, name: "AAA",
-                    description:"BBB", producer: "CCC", amount: 100,
-                    price: 1020}]}/*products={products}*//>}
+                // products={[{id_product: 123, name: "AAA",
+                //     description:"BBB", producer: "CCC", amount: 100,
+                //     price: 1020}]}
+                products={products.data}/>}
         </>
     )
 };

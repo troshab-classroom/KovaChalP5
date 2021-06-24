@@ -114,7 +114,7 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
 
     const submit = async () => {
         try{
-            const data = await request('Product/add', 'POST', {...modalRows}, {
+            const data = await request('api/good', 'POST', {...modalRows}, {
                 Authorization: "Bearer " + token
             });
             message(data.message());

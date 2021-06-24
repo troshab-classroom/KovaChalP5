@@ -137,7 +137,11 @@ export const FilterGroupTable = ({setIsModalTableOpened}) => {
             // modalRows.map((mRow) => {
             //
             // })
-            const data = await request('Group/filterBy', 'POST', modalRows, {
+            let req;
+            for (let i = 0; i < modalRows.length; ++i){
+                req += modalRows[i].column + " " + modalRows[i].sign + " " + modalRows[i].fieldValue + " " + modalRows[i].boolValue
+            }
+            const data = await request('api/group//filter/By', 'POST', {query: req}, {
                 Authorization: "Bearer " + token
             });
             message(data.message());
