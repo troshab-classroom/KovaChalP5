@@ -29,6 +29,7 @@ public class ProductController {
             products.amount= req.getInt("amount");
             products.group = req.getInt("group");
             products.description = req.getString("description");
+            products.producer = req.getString("producer");
             products.UPDATE();
             res.data.put("message","OK");
             res.code=200;
@@ -51,6 +52,7 @@ public class ProductController {
             products.amount= req.getInt("amount");
             products.group = req.getInt("group");
             products.description = req.getString("description");
+            products.producer = req.getString("producer");
             products.INSERT();
             res.data.put("id",products.getId());
             res.code=200;
@@ -71,6 +73,7 @@ public class ProductController {
             res.data.put("group",products.group);
             res.data.put("amount",products.amount);
             res.data.put("description",products.description);
+            res.data.put("producer",products.producer);
             res.data.put("id",products.getId());
             res.code=200;
             view.view(res);
@@ -111,6 +114,7 @@ public class ProductController {
             productJsonified.put("amount",product.amount);
             productJsonified.put("group",product.group);
             productJsonified.put("description",product.description);
+            productJsonified.put("producer",product.producer);
             productJsonified.put("id",product.getId());
             jarr.add(productJsonified);
         }
@@ -130,6 +134,7 @@ public class ProductController {
                 productJsonified.put("amount",product.amount);
                 productJsonified.put("group", product.group);
                 productJsonified.put("description", product.description);
+                productJsonified.put("producer",product.producer);
                 productJsonified.put("id", product.getId());
                 jarr.add(productJsonified);
             }
