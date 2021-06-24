@@ -73,7 +73,7 @@ public class ProductController {
                 products.INSERT();
                 //
             }
-            res.data.put("message", "ok");
+            res.data.put("message", "OK");
             res.code=200;
             view.view(res);
         } catch (InvalidDataException e) {
