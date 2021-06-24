@@ -25,7 +25,7 @@ public class Routes {
             Router.get("/api/group/{id}", GroupController::get);
             Router.get("/api/group/get/All", GroupController::getAll);
             Router.post("/api/group/{id}", GroupController::post);
-            Router.post("/api/good/filter/By", GroupController::getFiltered);
+            Router.post("/api/group/filter/By", GroupController::getFiltered);
             Router.put("/api/group", GroupController::put);
             Router.delete("/api/group/{id}", GroupController::delete);
         }
