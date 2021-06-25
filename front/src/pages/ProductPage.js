@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {useHttp} from "../hooks/http.hook";
 import {Loader} from "../components/Loader";
 import {AuthContext} from "../context/AuthContext";
 import {ProductList} from "../components/Product/ProductList";
 
 export const ProductPage = () => {
-    const [products, setProducts] = useState({data: [{}]});
+    const [products, setProducts] = useState({data: []});
     const {loading} = useHttp();
     const {token} = useContext(AuthContext);
 
@@ -22,7 +22,7 @@ export const ProductPage = () => {
     //     getProducts();
     // }, [getProducts]);
 
-    function getList() {
+    const getList = useCallback(() => {
         console.log(token);
         return fetch('http://localhost:8080/api/good/get/All',{
             method: "GET",
@@ -32,7 +32,7 @@ export const ProductPage = () => {
                 "authentification": token.token,
             },
         }).then(data => data.json());
-    }
+    }, [token]);
 
     useEffect(() => {
         let mounted = true;
@@ -42,7 +42,7 @@ export const ProductPage = () => {
             }
         });
         return () => mounted = false;
-    }, []);
+    }, [getList]);
 
     if (loading){
         return <Loader/>

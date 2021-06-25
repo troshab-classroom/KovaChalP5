@@ -190,10 +190,10 @@ export const FilterGroupTable = ({setIsModalTableOpened, setData}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {modalRows.map((row) => {
+                {modalRows.map((row, index) => {
                     // if(row) {
                         return (
-                            <ModalTableRow row={row}
+                            <ModalTableRow key={index} row={row}
                                            addRow={addNewRow}
                                            deleteRow={deleteRow}
                                            handleDataChange={handleChange}/>

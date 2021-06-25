@@ -124,10 +124,11 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {modalRows.map((row) => {
+                {modalRows.map((row, index) => {
                     // if(row) {
                         return (
-                            <ModalTableRow row={row}
+                            <ModalTableRow key={index}
+                                           row={row}
                                            deleteRow={deleteRow}
                                            handleDataChange={handleChange}/>
                         )

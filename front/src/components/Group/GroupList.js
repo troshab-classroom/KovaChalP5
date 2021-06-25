@@ -8,6 +8,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {Loader} from "../Loader";
 import {SortGroupTable} from "./SortGroupTable";
 import {FilterGroupTable} from "./FilterGroupTable";
+
 const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => {
     const message = useMessage();
     const {loading, error, request, clearError} = useHttp();
@@ -94,7 +95,6 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
             sum += Number.parseFloat(products[i].price) * Number.parseFloat(products[i].amount);
         }
         setTotalSum(sum);
-        console.log(totalSum);
     }, [products]);
 
     if(loading){
@@ -104,7 +104,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
     return(
         <tr>
             <td>
-                <input type="text" name="id_group" value={group.id}
+                <input type="number" name="id_group" value={group.id}
                        disabled={true} onChange={updateValues}/>
             </td>
             <td>
@@ -118,8 +118,9 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
                        disabled={!edit} onChange={(e) => {updateValues(e)}}/>
             </td>
             <td>
-                <input type="number" name="sum_total" value={totalSum}
-                       disabled={true} onChange={(e) => {updateValues(e)}}/>
+                {/*{totalSum}*/}
+                <input type="number" name="sum_total" value={"" + totalSum}
+                       disabled={true} onChange={updateValues}/>
             </td>
             <td>
                 <button type="button" className="btn btn-remove" onClick={removeRow}>

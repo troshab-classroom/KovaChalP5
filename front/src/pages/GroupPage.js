@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {useHttp} from "../hooks/http.hook";
 import {Loader} from "../components/Loader";
 import {AuthContext} from "../context/AuthContext";
 import {GroupList} from "../components/Group/GroupList";
 
 export const GroupPage = () => {
-    const [groups, setGroups] = useState({data: [{}]});
+    const [groups, setGroups] = useState({data: []});
     const {loading} = useHttp();
     const {token} = useContext(AuthContext);
 
@@ -23,7 +23,7 @@ export const GroupPage = () => {
     useEffect(() => {
         getGroup().then((fetched) => {console.log(fetched)});
     });*/
-	function getList() {
+	const getList = useCallback(() => {
 		return fetch('http://localhost:8080/api/group/get/All',{
 			method: "GET",
 			mode: "cors",
@@ -32,7 +32,7 @@ export const GroupPage = () => {
 				"authentification": token.token,
 			},
 		}).then(data => data.json());
-	}
+	}, [token]);
 
 	useEffect(() => {
 	   let mounted = true;
@@ -42,7 +42,7 @@ export const GroupPage = () => {
 		   }
 		 });
 	   return () => mounted = false;
-	   }, []);
+	   }, [getList]);
 
     if (loading){
         return <Loader/>

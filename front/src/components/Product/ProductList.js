@@ -10,7 +10,7 @@ import {SortProductTable} from "./SortProductTable";
 import {FilterProductTable} from "./FilterProductTable";
 
 const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
-                      openAddProduct, openRemoveProduct, setProductName}) => {
+                      openAddProduct, openRemoveProduct, setProduct}) => {
     const message = useMessage();
     const {loading, error, request, clearError} = useHttp();
     const [product, handleChangeProduct] = useState(row);
@@ -33,12 +33,12 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
     };
 
     const addProduct = () => {
-        setProductName(product.name);
+        setProduct(product);
         openAddProduct(true);
     };
 
     const removeProduct = () => {
-        setProductName(product.name);
+        setProduct(product);
         openRemoveProduct(true);
     };
 
@@ -102,7 +102,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
             </td>
             <td>
                 <input type="number" name="amount" value={product.amount}
-                        min={0} disabled={!edit}
+                        min={0} disabled={true}
                        onChange={(e) => {updateValues(e)}}/>
             </td>
             <td>
@@ -155,7 +155,7 @@ export const ProductList = ({products}) => {
     const [isFilterTableOpen, setIsFilterTableOpen] = useState(false);
     const [isAddProductTableOpen, setIsAddProductTableOpen] = useState(false);
     const [isRemoveProductTableOpen, setIsRemoveProductTableOpen] = useState(false);
-    const [productName, setProductName] = useState(undefined);
+    const [product, setProduct] = useState(undefined);
     const [amountToAddRemove, setAmountToAddRemove] = useState(0);
     // let tableRowIndex = categories.length-1;
     useEffect(() => {
@@ -199,16 +199,26 @@ export const ProductList = ({products}) => {
     };
 
     const removeProductSubmit = async () => {
-        const data = await request('api/good/removeProd', 'POST', {name: productName, amount:amountToAddRemove}, {
-            Authorization: "Bearer " + token
+        product.amount = Number.parseInt(product.amount) - amountToAddRemove+ "";
+        product.price += '';
+        product.amount += '';
+        product.id += '';
+        product.group += '';
+        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+            authentification: token.token
         });
         message(data.message);
         setIsRemoveProductTableOpen(false);
     };
 
     const addProductSubmit = async () => {
-        const data = await request('api/good/addProd', 'POST', {name: productName, amount:amountToAddRemove}, {
-            Authorization: "Bearer " + token
+        product.amount = Number.parseInt(product.amount) + Number.parseInt(amountToAddRemove) + "";
+        product.price += '';
+        product.amount += '';
+        product.id += '';
+        product.group += '';
+        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+            authentification: token.token
         });
         message(data.message);
         setIsAddProductTableOpen(false);
@@ -267,18 +277,22 @@ export const ProductList = ({products}) => {
             {isAddProductTableOpen && (
                 <Modal onClose={() => setIsAddProductTableOpen(false)}>
                     <form>
-                        {productName}
+                        {product.name}
                         <input name={"amount"} type={"number"} min={0} onChange={handleAddRemoveChange}/>
-                        <input type={"submit"} className={"btn"} onClick={addProductSubmit} value={"Submit"}/>
+                        <button type={"submit"} className={"btn"} onClick={addProductSubmit}>
+                            Submit
+                        </button>
                     </form>
                 </Modal>
             )}
             {isRemoveProductTableOpen && (
                 <Modal onClose={() => setIsRemoveProductTableOpen(false)}>
                     <form>
-                        {productName}
+                        {product.name}
                         <input name={"amount"} type={"number"} min={0} onChange={handleAddRemoveChange}/>
-                        <input type={"submit"} className={"btn"} onClick={removeProductSubmit} value={"Submit"}/>
+                        <button type={"submit"} className={"btn"} onClick={removeProductSubmit}>
+                            Submit
+                        </button>
                     </form>
                 </Modal>
             )}
@@ -313,10 +327,11 @@ export const ProductList = ({products}) => {
                 </thead>
 
                 <tbody>
-                {rows.map((product) => {
+                {rows.map((product, index) => {
                     // if(product) {
                         return (
-                            <TableRow setProductName={setProductName}
+                            <TableRow key={index}
+                                      setProduct={setProduct}
                                       openAddProduct={setIsAddProductTableOpen}
                                       openRemoveProduct={setIsRemoveProductTableOpen}
                                       row={product}
