@@ -187,7 +187,7 @@ export const FilterProductTable = ({setIsModalTableOpened, setData}) => {
     };
 
     function getList(req) {
-        return fetch('http://localhost:8080/api/good/filter/By',{
+        return fetch('https://localhost:8080/api/good/filter/By',{
             method: "POST",
             mode: "cors",
             headers: {

@@ -1,5 +1,6 @@
 package org.App.Utils.Network;
 
+import com.sun.net.httpserver.HttpsExchange;
 import org.App.Utils.Utils.Console;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.simple.JSONObject;
@@ -8,11 +9,11 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 public class Response {
-    public HttpExchange httpExchange;
+    public HttpsExchange httpExchange;
     public JSONObject data;
     public int code;
     public Response(){}
-    public Response(HttpExchange he){
+    public Response(HttpsExchange he){
         httpExchange=he;
         data = new JSONObject();
     }

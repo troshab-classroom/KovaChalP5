@@ -155,7 +155,7 @@ export const FilterGroupTable = ({setIsModalTableOpened, setData}) => {
     };
 
     function getList(req) {
-        return fetch('http://localhost:8080/api/group/filter/By',{
+        return fetch('https://localhost:8080/api/group/filter/By',{
             method: "POST",
             mode: "cors",
             headers: {

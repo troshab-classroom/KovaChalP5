@@ -50,7 +50,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
 
     const confirmRow = async () =>{
         setEdit(false);
-        const data = await request('http://localhost:8080/api/group/' + group.id, 'POST', group, {
+        const data = await request('https://localhost:8080/api/group/' + group.id, 'POST', group, {
             authentification: token.token
         });
         message(data.message);
@@ -62,7 +62,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm}) => 
     };
 
     const getList = useCallback((req) => {
-        return fetch('http://localhost:8080/api/good/filter/By',{
+        return fetch('https://localhost:8080/api/good/filter/By',{
             method: "POST",
             mode: "cors",
             headers: {
@@ -166,7 +166,7 @@ export const GroupList = ({groups}) => {
     }, [error, message, clearError]);
 	
 	// useEffect(async () => {
-	// 	console.log(await axios.get("http://localhost:8080/api/group/get/All"));
+	// 	console.log(await axios.get("https://localhost:8080/api/group/get/All"));
 	// });
 
     // const addNewRow = () => {
@@ -183,7 +183,7 @@ export const GroupList = ({groups}) => {
         if (indexToRemove > -1) {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
-            const data = await request('http://localhost:8080/api/group/' + number, 'DELETE', null, {
+            const data = await request('https://localhost:8080/api/group/' + number, 'DELETE', null, {
                 authentification: token.token
             });
             message(data.message);

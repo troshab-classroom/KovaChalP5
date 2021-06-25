@@ -64,7 +64,7 @@ const TableRow = ({row, handleDataChange, rowToDelete, openDeletionConfirm,
         product.amount += '';
         product.id += '';
         product.group += '';
-        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+        const data = await request('https://localhost:8080/api/good/' + product.id, 'POST', product, {
             authentification: token.token
         });
         message(data.message);
@@ -182,7 +182,7 @@ export const ProductList = ({products}) => {
         if (indexToRemove > -1) {
             updatedRows.splice(indexToRemove, 1);
             setRows(updatedRows);
-            const data = await request('http://localhost:8080/api/good/' + number, 'DELETE', null, {
+            const data = await request('https://localhost:8080/api/good/' + number, 'DELETE', null, {
                 authentification: token.token
             });
             message(data.message);

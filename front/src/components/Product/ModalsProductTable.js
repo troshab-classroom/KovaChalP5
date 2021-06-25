@@ -126,7 +126,7 @@ export const ModalClientsCardsTable = ({setIsModalTableOpened}) => {
             modalRows[i].group += '';
         }
         try{
-            const data = await request('http://localhost:8080/api/good', 'PUT', {data: modalRows}, {
+            const data = await request('https://localhost:8080/api/good', 'PUT', {data: modalRows}, {
                 authentification: token.token
             });
             message(data.message());

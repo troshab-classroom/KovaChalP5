@@ -1,5 +1,7 @@
 package org.App.Utils;
 
+import com.sun.net.httpserver.HttpsExchange;
+import com.sun.net.httpserver.HttpsServer;
 import org.App.Utils.Interfaces.Middleware;
 import org.App.Utils.Network.Request;
 import org.App.Utils.Network.Response;
@@ -15,10 +17,10 @@ import java.util.Collections;
 import java.util.HashMap;
 public class Router {
     private static HashMap<String, Route> routes = new HashMap<>();
-    private static HttpServer httpServer;
+    private static HttpsServer httpServer;
     private static ArrayList<Middleware> group = new ArrayList<>();
-    public static void setHttpServer(HttpServer httpServer) {
-        Router.httpServer = httpServer;
+    public static void setHttpsServer(HttpsServer httpsServer) {
+        Router.httpServer = httpsServer;
     }
     public static void group(Middleware[] middlewares){
         Collections.addAll(group, middlewares);
@@ -28,7 +30,8 @@ public class Router {
         Collections.addAll(group, middlewares);
     }
 
-    protected static void Handle(HttpExchange httpExchange){
+    protected static void Handle(HttpExchange httExchange){
+        HttpsExchange httpExchange = (HttpsExchange)httExchange;
         if(httpExchange.getRequestMethod().equals("OPTIONS")){
             httpExchange.getResponseHeaders().set("Access-Control-Allow-Methods","*");
             httpExchange.getResponseHeaders().set("Access-Control-Allow-Headers","*");

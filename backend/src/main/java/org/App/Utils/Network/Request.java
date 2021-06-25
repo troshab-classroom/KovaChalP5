@@ -1,5 +1,6 @@
 package org.App.Utils.Network;
 
+import com.sun.net.httpserver.HttpsExchange;
 import org.App.Utils.Utils.Console;
 import org.App.Utils.Utils.Session;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,10 +14,10 @@ import java.nio.charset.StandardCharsets;
 public class Request {
     public String url;
     public Session session;
-    public HttpExchange httpExchange;
+    public HttpsExchange httpExchange;
     public JSONObject data;
     Request(){}
-    public Request(HttpExchange he){
+    public Request(HttpsExchange he){
 
         try {
 
