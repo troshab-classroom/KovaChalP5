@@ -12,7 +12,7 @@ public class Routes {
     public static void run(){
         Router.post("/api/login", LoginController::login);
         Router.post("/api/exampleController", ExampleController::handle);
-        //Router.group(new Middleware[]{new AuthMiddleware()});
+        Router.group(new Middleware[]{new AuthMiddleware()});
         {
             Router.get("/api/good/{id}", ProductController::get);
             Router.get("/api/good/get/All", ProductController::getAll);

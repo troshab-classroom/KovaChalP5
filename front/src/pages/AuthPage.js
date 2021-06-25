@@ -36,7 +36,7 @@ export const AuthPage = () => {
     // };
 
     function getList() {
-        return fetch('http://localhost:8080/api/login',{
+        return fetch('https://localhost:8080/api/login',{
             method: "POST",
             mode: "cors",
             headers: {

@@ -24,7 +24,7 @@ export const GroupPage = () => {
         getGroup().then((fetched) => {console.log(fetched)});
     });*/
 	const getList = useCallback(() => {
-		return fetch('http://localhost:8080/api/group/get/All',{
+		return fetch('https://localhost:8080/api/group/get/All',{
 			method: "GET",
 			mode: "cors",
 			headers: {

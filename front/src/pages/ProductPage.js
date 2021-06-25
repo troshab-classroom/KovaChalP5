@@ -24,7 +24,7 @@ export const ProductPage = () => {
 
     const getList = useCallback(() => {
         console.log(token);
-        return fetch('http://localhost:8080/api/good/get/All',{
+        return fetch('https://localhost:8080/api/good/get/All',{
             method: "GET",
             mode: "cors",
             headers: {

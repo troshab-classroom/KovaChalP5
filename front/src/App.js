@@ -12,7 +12,8 @@ function App() {
     const {token, login, logout, ready} = useAuth();
     const isAuthenticated = !!token;
     const routes = useRoutes(isAuthenticated);
-
+    //https.globalAgent.options.rejectUnauthorized = false;
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     if (!ready){
         return <Loader/>
     }

@@ -204,7 +204,7 @@ export const ProductList = ({products}) => {
         product.amount += '';
         product.id += '';
         product.group += '';
-        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+        const data = await request('https://localhost:8080/api/good/' + product.id, 'POST', product, {
             authentification: token.token
         });
         message(data.message);
@@ -217,7 +217,7 @@ export const ProductList = ({products}) => {
         product.amount += '';
         product.id += '';
         product.group += '';
-        const data = await request('http://localhost:8080/api/good/' + product.id, 'POST', product, {
+        const data = await request('https://localhost:8080/api/good/' + product.id, 'POST', product, {
             authentification: token.token
         });
         message(data.message);
